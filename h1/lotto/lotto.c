@@ -57,6 +57,10 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    for(int e = 0; e <7; e++) {
+
+    }
+
     /* print results */
     if (correct > 0) {
         printf("%d oikein:", correct);
