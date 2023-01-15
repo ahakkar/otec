@@ -2,8 +2,7 @@
  * COMP.CS.120 Ohjelmoinnin Tekniikka C
  * H1 T10 Tilastoja
  *
- * Antti Hakkarainen
- * K79735 vqanha
+ * Antti Hakkarainen / K79735
  * antti.i.hakkarainen@tuni.fi
  */
 #include <stdio.h>
@@ -99,11 +98,10 @@ void most_often(int amt, char *argv[]) {
                 count++;
             }
         }
-        if (count > 1) {
-            if (count > max_amt) {
-                max_amt = count;
-            }
+        if (count > max_amt) {
+            max_amt = count;
         }
+
     }
 
     if (max_amt > -1) {
