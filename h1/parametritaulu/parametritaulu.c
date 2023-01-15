@@ -19,7 +19,6 @@ int count_digits(int num) {
        num /= 10;
        result++;
     }
-    printf("%d\n", result);
     return result;
 }
 
@@ -51,7 +50,7 @@ int main(int argc, char *argv[]) {
     for (i = 1; i < argc; i++) {
         printf("#%*d | %-*s #\n", col0_width, i, col1_width, argv[i]);
         /* avoid printing extra dividers */
-        if (i <= argc) {
+        if (i < argc-1) {
             putchar('#');
             print_n(col0_width+1, '-', false);
             putchar('+');
