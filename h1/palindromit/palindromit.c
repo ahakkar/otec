@@ -6,14 +6,34 @@
  * antti.i.hakkarainen@tuni.fi
  */
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
 
-int main()
-{
-    printf("Hello World!\n");
-    return 0;
+bool check_pal(char word[]) {    
+    int word_len = strlen(word);
+    int i = 0;
+
+    for(; i < word_len/2; i++) {
+        if (tolower(word[i]) != tolower(word[word_len-i-1])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int main(int argc, char *argv[]) {
+    int i = 1;
+
+    for(; i < argc; i++) {        
+        printf("\"%s\": %s\n",
+               argv[i],
+               check_pal(argv[i]) ? "on palindromi" : "ei ole palindromi");
+    }
+
+    return 0;    
 }
