@@ -70,17 +70,74 @@ void unique(int amt, char *argv[]) {
     }
 }
 
-void most_often(int amt, char *argv[]) {
+bool check_num(double num, int added, double printed[]) {
+    int i = 0;
+    for(; i < added; i++) {
+        if (num == printed[i]) {
+            return false;
+        }
+    }
 
-
+    return true;
 }
 
+void most_often(int amt, char *argv[]) {
+    int i = 1;
+    int j = 1;
+    int count = 0;
+    int max_amt = -1;
+
+    double printed[100];
+    int added = 0;
+
+    /* do once */
+    for(; i <= amt; i++) {
+        count = 0;
+        /* do repeatedly */
+        for(j = 1; j <= amt; j++) {
+            if (atof(argv[i]) == atof(argv[j])) {
+                count++;
+            }
+        }
+        if (count > 1) {
+            if (count > max_amt) {
+                max_amt = count;
+            }
+        }
+    }
+
+    if (max_amt > -1) {
+        printf("Useimmiten esiintyneet (%d kertaa):", max_amt);
+
+        /* do once */
+        for(i = 1; i <= amt; i++) {
+            count = 0;
+            /* do repeatedly */
+            for(j = 1; j <= amt; j++) {
+                if (atof(argv[i]) == atof(argv[j])) {
+                    count++;
+                    if (count == max_amt) {
+                        if ( check_num(atof(argv[j]), added, printed) ) {
+                            printf(" %.*f", PRINT_PRECISION, atof(argv[j]));
+                        }
+                        printed[added] = atof(argv[j]);
+                        added++;
+                    }
+                }
+            }
+        }
+        printf("\n");
+    }
+}
+
+
 int main(int argc, char *argv[])
-{
-    min(argc-1, argv);
-    max(argc-1, argv);
-    unique(argc-1, argv);
-    most_often(argc-1, argv);
+{    
+    argc--; /* don't need to count the program's name as parameter */
+    min(argc, argv);
+    max(argc, argv);
+    unique(argc, argv);
+    most_often(argc, argv);
 
     return 0;
 
