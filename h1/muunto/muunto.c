@@ -1,3 +1,11 @@
+/*
+ * COMP.CS.120 Ohjelmoinnin Tekniikka C
+ * H1 T15 Muunto
+ *
+ * Antti Hakkarainen / K79735
+ * antti.i.hakkarainen@tuni.fi
+ */
+
 #include "muunto.h"
 #include <stdio.h>
 #include <string.h>
@@ -17,7 +25,6 @@ void muunna(char mj[]) {
     }
     for(i = 0; i < len/2; i++) {
         tmp = mj[len-1-i];
-        /*printf("%c\n", tmp); */
         mj[len-1-i] = mj[i];
         mj[i] = tmp;
     }
