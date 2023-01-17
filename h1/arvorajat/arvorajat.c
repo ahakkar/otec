@@ -23,74 +23,49 @@
  * muuttujatyypin lukuvälin ala- tai ylärajaa.
  */
 
+/* intro struct for limit data*/
+struct limit {
+    char str[20];
+    int min;
+    int max;
+};
+
+/* create array with limits */
+struct limit limits[5] = {
+    {"signed char", SCHAR_MIN, SCHAR_MAX },
+    {"unsigned char", 0, UCHAR_MAX },
+    {"short int", SHRT_MIN, SHRT_MAX },
+    {"unsigned short int", 0, USHRT_MAX},
+    {"int", INT_MIN, INT_MAX}
+};
+
+static const int MAX_LIMITS = 5;
+
 int main(int argc, char *argv[])
 {
     int value;
-    int i = 1;
-    int sep = -1;
+    int i = 1; 
+    int j = 0;
+    bool first = true;
 
+    /* loop through the cmdline params, once */
     for (; i < argc; i++) {
         value = atoi(argv[i]);
-        sep = -1;
+        first = true;
 
         printf("%d:", value);
 
-        /* research the amount of separators needed */
-        if (value >= -128 && value <= 127) {
-            sep++;
-        }
-        if (value >= 0 && value <= 255) {
-            sep++;
-        }
-        if (value >= -32768 && value <= 32767) {
-            sep++;
-        }
-        if (value >= 0 && value <= 65535) {
-            sep++;
-        }
-        if (value >= -2147483647 && value <= 2147483647) {
-            sep++;
-        }
+        /* loop through the defined limits, multiple times */
+        for (j = 0; j < MAX_LIMITS; j++) {
+            if (value >= limits[j].min && value <= limits[j].max) {
+                if (!first) putchar(',');
+                else first = false;
+                printf(" %s", limits[j].str);
 
-        if (value >= SCHAR_MIN && value <= SCHAR_MAX) {
-            printf(" signed char");
-            if (sep > 0) {
-                putchar(',');
-                sep--;
             }
         }
-        if (value >= 0 && value <= UCHAR_MAX) {
-            printf(" unsigned char");
-            if (sep > 0) {
-                putchar(',');
-                sep--;
-            }
-        }
-        if (value >= SHRT_MIN && value <= SHRT_MAX) {
-            printf(" short int");
-            if (sep > 0) {
-                putchar(',');
-                sep--;
-            }
-        }
-        if (value >= 0 && value <= USHRT_MAX) {
-            printf(" unsigned short int");
-            if (sep > 0) {
-                putchar(',');
-                sep--;
-            }
-        }
-        if (value >= INT_MIN && value <= INT_MAX) {
-            printf(" int");
-            if (sep > 0) {
-                putchar(',');
-                sep--;
-            }
-        }
-
         /* new line for new number */
         putchar('\n');
-
     }
 
     return 0;
