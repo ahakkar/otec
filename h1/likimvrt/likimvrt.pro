@@ -4,8 +4,8 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.c \
-        unsigned.c
+    likimvrt.c \
+    main.c
 
 HEADERS += \
-    unsigned.h
+    likimvrt.h

@@ -31,7 +31,7 @@ struct limit {
 };
 
 /* create array with limits */
-struct limit limits[5] = {
+static const struct limit limits[5] = {
     {"signed char", SCHAR_MIN, SCHAR_MAX },
     {"unsigned char", 0, UCHAR_MAX },
     {"short int", SHRT_MIN, SHRT_MAX },
@@ -61,7 +61,6 @@ int main(int argc, char *argv[])
                 if (!first) putchar(',');
                 else first = false;
                 printf(" %s", limits[j].str);
-
             }
         }
         /* new line for new number */
