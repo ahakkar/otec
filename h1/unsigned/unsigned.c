@@ -18,15 +18,15 @@ void ucharIntervalli(unsigned char sade, unsigned char askel) {
     printf("unsigned char:");
 
     while (-sade + i*askel < 0) {
-        num = UCHAR_MAX - sade + 1 + i*askel;
+        num = -sade + i*askel;
         printf(" %d", num);
         i++;
     }
 
-    num = UCHAR_MAX - sade + 1 + i*askel;
+    num = -sade + i*askel;
 
     while (num < sade) {
-        num = UCHAR_MAX - sade + 1 + i*askel;
+        num = -sade + i*askel;
         if (num <= sade) {
             printf(" %d", num);
         }
@@ -44,15 +44,15 @@ void ushortIntervalli(unsigned short sade, unsigned short askel) {
     printf("unsigned short:");
 
     while (-sade + i*askel < 0) {
-        num = USHRT_MAX - sade + 1 + i*askel;
+        num = -sade + i*askel;
         printf(" %d", num);
         i++;
     }
 
-    num = USHRT_MAX - sade + 1 + i*askel;
+    num = -sade + i*askel;
 
     while (num < sade) {
-        num = USHRT_MAX - sade + 1 + i*askel;
+        num = -sade + i*askel;
         if (num <= sade) {
             printf(" %d", num);
         }
@@ -62,7 +62,6 @@ void ushortIntervalli(unsigned short sade, unsigned short askel) {
     putchar('\n');
 }
 
-
 void uintIntervalli(unsigned int sade, unsigned int askel) {
 
     int i = 0;
@@ -70,14 +69,14 @@ void uintIntervalli(unsigned int sade, unsigned int askel) {
 
     printf("unsigned int:");
 
-    while (num - askel > 0 && i < 10) {
+    while (num - askel < num) {
         printf(" %u", num);
         i++;
         num = -sade + i*askel;
     }
 
     while (num < sade) {
-        num = UINT_MAX - sade + 1 + i*askel;
+        num = -sade + i*askel;
         if (num <= sade) {
             printf(" %u", num);
         }
@@ -88,17 +87,21 @@ void uintIntervalli(unsigned int sade, unsigned int askel) {
 
 }
 
-void ulongIntervalli(unsigned long long sade, unsigned long long askel) {
+void ulongIntervalli(unsigned long sade, unsigned long askel) {
 
-    unsigned long num;
     unsigned long i = 0;
+    unsigned long num = -sade + i*askel;
 
     printf("unsigned long:");
 
-    num = ULONG_MAX - sade + 1 + i*askel;
+    while (num - askel < num) {
+        printf(" %lu", num);
+        i++;
+        num = -sade + i*askel;
+    }
 
     while (num < sade) {
-        num = ULONG_MAX - sade + 1 + i*askel;
+        num = -sade + i*askel;
         if (num <= sade) {
             printf(" %lu", num);
         }
