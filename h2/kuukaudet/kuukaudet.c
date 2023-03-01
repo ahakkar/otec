@@ -72,6 +72,7 @@ char* string_to_uppercase(const char *str) {
 
 int kkPituus(const char *kkNimi, int vuosiluku) {
     int i = 0;
+    int rval = -1; /* -1 = month was not found from the month list */
 
     for (; i < KK_LKM; i++) {
         /* temp vars for uppercase strings since we can't edit const vars */
@@ -80,25 +81,18 @@ int kkPituus(const char *kkNimi, int vuosiluku) {
 
         /* compare months, if month is found, return the amount of dates in a month */
         if (strcmp(str1, str2) == 0) {
-            /* printf("found month %s, %s\n", kkNimi, KK_NIMET[i]); */
             if (karkausvuosi(vuosiluku)) {
-                free(str1);
-                free(str2);
-                return KK_PAIVAT[KARKAUSVUOSI][i];
+                rval = KK_PAIVAT[KARKAUSVUOSI][i];
+                continue;
             }
-
-            free(str1);
-            free(str2);
-
-            return KK_PAIVAT[EI_KARKAUSVUOTTA][i];
+            rval =  KK_PAIVAT[EI_KARKAUSVUOTTA][i];
         }
 
         free(str1);
         free(str2);
-
     }
 
-    return -1;
+    return rval;
 }
 
 
