@@ -4,8 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        kuukaudet.c \
-        main.c
+        kuukaudet.c
 
 HEADERS += \
     kuukaudet.h
