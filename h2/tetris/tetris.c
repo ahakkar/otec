@@ -78,7 +78,7 @@ void paivita(char ruudukko[20][10]) {
     const int ROWS = 20;
     const int COLS = 10;
 
-    char row_content[11];
+    char row_content[10];
 
     int row_to_clear = 0;
     int row = 0;
@@ -89,10 +89,8 @@ void paivita(char ruudukko[20][10]) {
         /* read current row to row_content variable */
         memcpy(row_content, ruudukko[row], COLS);
 
-        row_content[COLS] = '\0'; /* add null terminator */
-
-        /* Now compare the current row_contents with empty and full rows:
-          First, increment the starting row if we find empty rows at beginning */
+        /* Now compare the current row_contents with EMPTY and FULL rows:
+           First, increment the starting row if we find empty rows at beginning */
         if (strncmp(row_content, EMPTY_ROW, COLS) == 0) {
             row_to_clear++;
         }
