@@ -62,7 +62,6 @@ Pvm * kasvataPvm(Pvm *pvm) {
         pvm->pv += 1;
     }
 
-
     /* increase the date string by one
        first: check for sunday */
     if (date_as_int == VKPV_AMOUNT-1) {
@@ -121,7 +120,6 @@ int karkausvuosi(int v) {
 }
 
 
-/*
 int main(int argc, char *argv[])
 {
     Pvm a = {28, 2, 1900, "ke"};
@@ -142,5 +140,5 @@ int main(int argc, char *argv[])
     tulostaPvm(&a);  printf(" vs ");  tulostaPvm(&c);  printf(": %u\n", pvmEro(&a, &c));
     return 0;
 }
-*/
+
 
