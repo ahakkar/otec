@@ -42,7 +42,6 @@ char *fib_jono_mj(unsigned int n) {
     size_t len = 0;   /* length of the string */
     unsigned int i;
     unsigned int required_size;
-    unsigned int printed = 1;
     char temp[20];
     char* str = (char*) XMALLOC(size * sizeof(char));  /* allocate memory for the string */
 
@@ -76,17 +75,11 @@ char *fib_jono_mj(unsigned int n) {
             str = (char*) XREALLOC(str, size * sizeof(char));
         }
 
-        if(printed) {
-           len += sprintf(str + len, ",");
-        }
-
         /* append fibonacci number */
-        len += sprintf(str + len, "%s", temp);
-
-        printed = 1;
+        len += sprintf(str + len, ",%s", temp);
     }
 
-    /* printf("size: %llu, length: %llu\n", size, len); */
+    /* resize list to fit the str */
     str = XREALLOC(str, len * sizeof(char) + 1);
     return str;
 }
