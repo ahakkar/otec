@@ -10,6 +10,83 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* refactored version to initialize vars first, then set them later */
+Kertotaulu *luoKertotaulu2(uint a, uint b, uint c, uint d) {
+
+    /* Initialize vars */
+    Kertotaulu *kert;
+    uint** list;
+    int size_x, size_y, row, col, factor1, factor2;
+
+    /* Return if params are bad */
+    if (a > b || c > d) { return NULL; }
+
+    /* Allocate memory and set vars */
+    size_x = b-a+2;
+    size_y = d-c+2;
+    factor2 = c;
+    kert = (Kertotaulu*) malloc(sizeof(Kertotaulu));
+    list = (uint**) malloc(size_y * sizeof(uint*));
+
+    for (row = 0; row < size_y; row++) {
+        /* Allocate memory for a new pointer list */
+        list[row] = (uint*) malloc(size_x * sizeof(uint));
+
+        /* adjust factors for col and row title prints */
+        if (row == 0) {
+            factor1 = a;
+        }
+        else if (row == 1) {
+            factor1 = a-1;
+            factor2 = c;
+        } else {
+            factor1 = a-1;
+        }
+
+        /* Initialize each element of the pointer list */
+        for (col = 0; col < size_x; col++) {
+            /* ignore first cell */
+            if (row == 0 && col == 0) {
+                continue;
+            }
+            /* set row 0 to factor 1 */
+            else if (row == 0) {
+                list[row][col] = factor1;
+            }
+            /* set col 0 to factor 2 */
+            else if (col == 0) {
+                list[row][col] = factor2;
+            }
+            /* otherwise set the sum of factors */
+            else {
+                list[row][col] = factor1 * factor2;
+            }
+            factor1++;
+        }
+        if (row > 0 && col > 0) {
+            factor2++;
+        }
+    }
+
+    kert->a = a;
+    kert->b = b;
+    kert->c = c;
+    kert->d = d;
+    kert->kertotaulu = list;
+
+    return kert;
+}
+
+/* Computes the factor for the given row and column indices */
+uint computeFactor(uint col, uint row) {
+    if (row == 1) {
+        return col - 1;
+    }
+    else {
+        return (col - 1) * (row - 1);
+    }
+}
+
 
 Kertotaulu *luoKertotaulu(uint a, uint b, uint c, uint d) {
 
@@ -26,11 +103,6 @@ Kertotaulu *luoKertotaulu(uint a, uint b, uint c, uint d) {
 
     /* Allocate memory for a list of pointer lists */
     uint** list = (uint**) malloc(size_y * sizeof(uint*));
-
-    kert->a = a;
-    kert->b = b;
-    kert->c = c;
-    kert->d = d;
 
     if (a > b || c > d) {
         if (kert == NULL && list == NULL) {
@@ -81,7 +153,10 @@ Kertotaulu *luoKertotaulu(uint a, uint b, uint c, uint d) {
         }
     }
 
-
+    kert->a = a;
+    kert->b = b;
+    kert->c = c;
+    kert->d = d;
     kert->kertotaulu = list;
 
     return kert;
@@ -99,31 +174,5 @@ void tuhoaKertotaulu(Kertotaulu *kt) {
     free(kt->kertotaulu);
     free(kt);
 
-}
-
-
-int main(int argc, char *argv[]) {
-    if (argc < 5) {
-        return 0;
-    }
-
-    Kertotaulu *kt = luoKertotaulu(atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));
-    uint i = 0;
-    uint j = 0;
-
-    for(i = 0; i <= (kt->d - kt->c + 1); ++i) {
-        for(j = 0; j <= (kt->b - kt->a + 1); ++j) {
-            if((i > 0) || (j > 0)) {
-                printf("%4u", kt->kertotaulu[i][j]);
-            }
-            else {
-                printf("    ");
-            }
-        }
-        printf("\n");
-    }
-    tuhoaKertotaulu(kt);
-
-    return 0;
 }
 

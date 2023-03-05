@@ -22,6 +22,7 @@ struct Kertotaulu {
 typedef struct Kertotaulu Kertotaulu;
 
 Kertotaulu * luoKertotaulu(uint a, uint b, uint c, uint d);
+Kertotaulu * luoKertotaulu2(uint a, uint b, uint c, uint d);
 
 void tuhoaKertotaulu(Kertotaulu *kt);
 

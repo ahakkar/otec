@@ -4,8 +4,8 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        kertotaulu.c \
+        fibonacci.c \
         main.c
 
 HEADERS += \
-    kertotaulu.h
+    fibonacci.h
