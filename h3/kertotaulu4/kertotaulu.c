@@ -18,6 +18,7 @@
 #define XREALLOC(ptr, size) reallocate_memory((ptr), (size), __LINE__)
 #define EXTRA_SPACE 2
 
+
 void* allocate_memory(size_t size, int line) {
     void* ptr = malloc(size);
     if (ptr == NULL) {
@@ -26,6 +27,7 @@ void* allocate_memory(size_t size, int line) {
     }
     return ptr;
 }
+
 
 void* reallocate_memory(void* ptr, size_t size, int line) {
     void* new_ptr = realloc(ptr, size);
@@ -36,48 +38,147 @@ void* reallocate_memory(void* ptr, size_t size, int line) {
     return new_ptr;
 }
 
-/* calculate col width for each column */
+
 int * calc_col_widths(uint size_x, uint x_min, uint y_max) {
     char buffer[20];
     int* col_widths = XMALLOC(size_x * sizeof(int)); /* sprintf returns int */
-    uint i, cur_x = 0;
-    int col_width;
+    uint i, cur_x;
 
-    cur_x = x_min;
+    /* calculate first col's width outside for loop */
+    col_widths[0] = sprintf(buffer, "%d", y_max);
 
-    for(i = 0; i < size_x; i++) {
-        /* calculate first col's width */
-        if (i == 0) {
-            col_width = sprintf(buffer, "%d", y_max);
-        }
-        /* Largest col value is current x value * y_max
-         * add an extra char to other cols for spacing
-         */
-        else {
-            col_width = sprintf(buffer, "%d", cur_x*y_max) + 1;
-        }
-        col_widths[i] = col_width;
-
-        /* avoid widening the cols because of 1st col */
-        if (i > 0) {
-            cur_x++;
-        }
+    /* - Largest col value is current x value * y_max.
+     * - Add an extra char to other cols for spacing. */
+    for(i = 1, cur_x = x_min; i < size_x; i++, cur_x++) {
+        col_widths[i] = sprintf(buffer, "%d", cur_x*y_max) + 1;
     }
-
     return col_widths;
 }
+
 
 int calc_row_width(int size_x, int *col_widths) {
     int i, row_width = 0;
     for(i = 0; i < size_x; i++) {
-        /* printf("col width %d: %d\n", i, col_widths[i]); */
         row_width += col_widths[i];
     }
-
     return row_width;
 }
 
+
 char ** luo_kertotaulu_mjt(uint x_min, uint x_max, uint y_min, uint y_max) {
+    char **table;
+    int *col_widths;
+    int size_x, size_y, row, col, factor1, factor2, row_width, offset;
+
+    if (x_min > x_max || y_min > y_max) { return NULL; }
+
+    size_x = x_max-x_min + EXTRA_SPACE;
+    size_y = y_max-y_min + EXTRA_SPACE;
+
+    /* Calculate widths and allocate memory for table */
+    col_widths = calc_col_widths(size_x, x_min, y_max);
+    row_width = calc_row_width(size_x, col_widths);
+    table = (char **) XMALLOC(size_y * sizeof(char *));
+
+    set_row_lables(table, size_y, y_min-1, col_widths, row_width);
+    set_column_labels(table, size_x, x_min, col_widths);
+
+    /* Populate the table with nums */
+    for (row = 1, factor2 = y_min; row < size_y; row++, factor2++) {
+        factor1 = x_min;        /* Reset factor1 and offset every row */
+        offset = col_widths[0]; /* Reset offset every row */
+
+        /* Initialize each element of the pointer list */
+        for (col = 1; col < size_x; col++, factor1++) {
+            offset += sprintf(table[row] + offset, "%*d", col_widths[col], factor1 * factor2);
+        }
+    }
+
+    free(col_widths);
+    return table;
+}
+
+
+void set_row_lables(char ** table, int size_y, int factor2, int *col_widths, int row_width) {
+    int row;
+    for (row = 0; row < size_y; row++, factor2++) {
+        /* Allocate memory for rows while setting the row lables */
+        table[row] = (char*) XMALLOC((row_width + 1) * sizeof(char));
+        row == 0 ? sprintf(table[row], "%*s", col_widths[0], "")
+                 : sprintf(table[row], "%*d", col_widths[0], factor2);
+    }
+}
+
+
+void set_column_labels(char ** table, int size_x, int factor1, int *col_widths) {
+    int col;
+    int offset = col_widths[0];
+    for (col = 1; col < size_x; col++, factor1++) {
+        offset += sprintf(table[0] + offset, "%*d", col_widths[col], factor1);
+    }
+}
+
+
+/* a go at refactored version */
+char ** luo_kertotaulu_mjt2(uint x_min, uint x_max, uint y_min, uint y_max) {
+    /* Initialize vars */
+    char **table;
+    int *col_widths;
+    int size_x, size_y, row, col, factor1, factor2, row_width, offset;
+
+    /* Return if params are bad */
+    if (x_min > x_max || y_min > y_max) { return NULL; }
+
+    size_x = x_max-x_min + EXTRA_SPACE;
+    size_y = y_max-y_min + EXTRA_SPACE;
+
+    /* first calculate the width for each column */
+    col_widths = calc_col_widths(size_x, x_min, y_max);
+    row_width = calc_row_width(size_x, col_widths);
+
+    /* allocate memory for rows */
+    table = (char **) XMALLOC(size_y * sizeof(char *));
+
+    /* allocate memory for cols and set row labels */
+    factor2 = y_min-1 /* -1 because of the 0,0 case which is empty */;
+    for (row = 0; row < size_y; row++) {
+        table[row] = (char*) XMALLOC((row_width + 1) * sizeof(char));
+
+        row == 0 ? sprintf(table[row], "%*s", col_widths[0], "")
+                 : sprintf(table[row], "%*d", col_widths[0], factor2);
+
+        factor2++;
+    }
+
+    /* set column labels */
+    factor1 = x_min;
+    offset = col_widths[0];
+    for (col = 1; col < size_x; col++) {
+        offset += sprintf(table[0] + offset, "%*d", col_widths[col], factor1);
+        factor1++;
+    }
+
+    /* Populate the table with nums */
+    factor2 = y_min;
+    for (row = 1; row < size_y; row++) {
+        factor1 = x_min;        /* Reset factor1 and offset every row */
+        offset = col_widths[0]; /* row label column's width */
+
+        /* Initialize each element of the pointer list */
+        for (col = 1; col < size_x; col++) {
+            offset += sprintf(table[row] + offset, "%*d", col_widths[col], factor1 * factor2);
+            factor1++;
+        }
+        factor2++;
+    }
+
+    free(col_widths);
+    return table;
+}
+
+
+/* original version */
+char ** luo_kertotaulu_mjt3(uint x_min, uint x_max, uint y_min, uint y_max) {
     /* Initialize vars */
     char **table;
     int *col_widths;
