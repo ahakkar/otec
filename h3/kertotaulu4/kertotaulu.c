@@ -58,6 +58,7 @@ int * calc_col_widths(uint size_x, uint x_min, uint y_max) {
 
 int calc_row_width(int size_x, int *col_widths) {
     int i, row_width = 0;
+
     for(i = 0; i < size_x; i++) {
         row_width += col_widths[i];
     }
@@ -88,7 +89,6 @@ char ** luo_kertotaulu_mjt(uint x_min, uint x_max, uint y_min, uint y_max) {
         factor1 = x_min;        /* Reset factor1 and offset every row */
         offset = col_widths[0]; /* Reset offset every row */
 
-        /* Initialize each element of the pointer list */
         for (col = 1; col < size_x; col++, factor1++) {
             offset += sprintf(table[row] + offset, "%*d", col_widths[col], factor1 * factor2);
         }
