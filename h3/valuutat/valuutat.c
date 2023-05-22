@@ -38,52 +38,33 @@ void resize_rates(
 
 /* Add new rate to the rates array */
 void add_rate(
-    char *input,
+    char *currency,
+    double rate,
     struct exchange_rate **rates,
     int *num_currencies
 ) {
-    char *token;
-    char currency[4];
-    double rate;
-
-    /* Split input into tokens */
-    token = strtok(input, " ");
-    token = strtok(NULL, " ");
-    strcpy(currency, token);
-    token = strtok(NULL, " ");
-    rate = atof(token);
-
     /* Add new rate to the rates array */
     strcpy((*rates)[*num_currencies].currency, currency);
     (*rates)[*num_currencies].rate = rate;
+    (*num_currencies)++;
 }
 
 
 /* Convert currency from rate to EUR */
 void convert(
-    char *input,
+    double rate,
+    char *currency,
     struct exchange_rate **rates,
     int *num_currencies
 ) {
-    char *token;
-    char currency[4];
-    double amount;
     double converted_amount;
     int i = 0;
-
-    /* Split input into tokens */
-    token = strtok(input, " ");
-    token = strtok(NULL, " ");
-    amount = atof(token);
-    token = strtok(NULL, " ");
-    strncpy(currency, token, sizeof(currency) - 1);
-    currency[sizeof(currency) - 1] = '\0';
 
     /* Find the currency from the rates array */
     for (i = 0; i < *num_currencies; i++) {
         if (strcmp(currency, (*rates)[i].currency) == 0) {
-            converted_amount = amount * (*rates)[i].rate;
-            printf("%.3f %s = %.3f EUR\n", amount, currency, converted_amount);
+            converted_amount = rate * (*rates)[i].rate;
+            printf("%.3f %s = %.3f EUR\n", rate, currency, converted_amount);
             break;
         }
     }
@@ -108,6 +89,8 @@ int main(void)
     int max_currencies = 0;
     char input[80];
     char *token;
+    char currency[4];
+    double rate;
 
     
     while (1) {
@@ -124,17 +107,28 @@ int main(void)
         /* Split input into tokens */
         token = strtok(input, " ");
         if (token != NULL) {
-            if (strcmp(token, "kurssi")) {
-                add_rate(input, &rates, &num_currencies);
-                num_currencies++;
+            if (strcmp(token, "kurssi") == 0) {
+                token = strtok(NULL, " ");
+                strncpy(currency, token, sizeof(currency) - 1);
+                currency[sizeof(currency) - 1] = '\0';
+                token = strtok(NULL, " ");
+                rate = atof(token); 
+
+                add_rate(currency, rate, &rates, &num_currencies);   
             }
-            else if (strcmp(token, "muunna")) {
-                convert(input, &rates, &num_currencies);
+            else if (strcmp(token, "muunna") == 0) {
+                token = strtok(NULL, " ");
+                rate = atof(token);
+                token = strtok(NULL, " ");
+                strncpy(currency, token, sizeof(currency) - 1);
+                currency[sizeof(currency) - 1] = '\0';
+
+                convert(rate, currency, &rates, &num_currencies);
             }            
-            else if (strcmp(token, "kurssit") == 0) {
+            else if (strcmp(token, "kurssit\n") == 0) {
                 print_rates(&rates);
             }
-            else if (strcmp(token, "lopeta") == 0) {
+            else if (strcmp(token, "lopeta\n") == 0) {
                 break;
             }
             else {
