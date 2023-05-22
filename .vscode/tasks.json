@@ -6,6 +6,11 @@
             "command": "/usr/bin/gcc-10",
             "args": [
                 "-fdiagnostics-color=always",
+                "-std=c89",
+                "-pedantic",
+                "-Wall",
+                "-Wextra",
+                "-Werror",
                 "-g",
                 "${file}",
                 "-o",

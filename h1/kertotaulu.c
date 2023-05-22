@@ -9,10 +9,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-int func_test(int param) {
-    
-}
-
 int main() {  
     int i = 0;    
     bool first = true;
@@ -23,7 +19,7 @@ int main() {
         if (i % 3 == 0 || i % 2 == 0 || i % 5 == 0) {
             continue;
         }
-        if (i == 0) {
+        if (first) {
             printf("%d", i);
             first = false;  
             continue; 
@@ -31,4 +27,6 @@ int main() {
         printf(" %d", i);        
     }    
     printf("\n");
+
     return 0;
+}

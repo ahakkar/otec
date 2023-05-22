@@ -1,0 +1,3 @@
+Strict compilation:
+
+gcc -std=c89 -pedantic -Wall -Wextra -Werror -o program_name program_name.c

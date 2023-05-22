@@ -12,17 +12,70 @@
 #include "lista.h"
 
 
-/* my implementations */
+/* Add a node at position i */
 DblSolmu *dl_lisaa(DblLista *lista, size_t i, double arvo) {
+    DblSolmu *s;
+    DblSolmu *new_node;
+    int list_size = dl_koko(lista);
+    int j = 0;
 
+    /* Add the data to the end of list if i is out of bounds */
+    if(i >= list_size) {
+        new_node = ds_luo(arvo, NULL);
+        s = lista->paa;
+        while(s->seur != NULL) {
+            s = s->seur;
+        }
+        s->seur = new_node;
+        return new_node;        
+    }
+
+    /* otherwise add it to the specified position */
+    for(s = lista->paa; s != NULL; s = s->seur) {
+        if(j == i) {
+            new_node = ds_luo(arvo, s->seur);
+            s->seur = new_node;
+            return new_node;
+        }
+        j++;
+    }
+    /* still did not find anything? */
+    return NULL;
 }
 
-double dl_alkio(const DblLista *lista, size_t i) {
+/* returns value at node position i in the linked list */
+double dl_alkio(const DblLista *lista, size_t i) {    
+    DblSolmu *s;
+    int list_size = dl_koko(lista);
+    int j = 0;
 
+    /* check if i is out of bounds */
+    if(i >= list_size) {
+        return 0;
+    }
+
+    for(s = lista->paa; s != NULL; s = s->seur) {
+        if(j == i) {
+            return s->data;
+        }
+        j++;
+    }
+    /* still did not find anything? */
+    return 0;
 }
 
 double dl_poista(DblLista *lista, size_t i) {
 
+}
+
+/* calculates the list size and returns it*/
+int dl_koko(const DblLista *lista) {
+    int list_size = 0;
+    DblSolmu *s;
+    for(s = lista->paa; s != NULL; s = s->seur) {
+        list_size++;
+    }
+    return list_size;
 }
 
 

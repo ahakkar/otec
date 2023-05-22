@@ -44,4 +44,6 @@ double dl_poista(DblLista *lista, size_t i);
 
 void dl_tulosta(const DblLista *lista);
 
+int dl_koko(const DblLista *lista);
+
 #endif
