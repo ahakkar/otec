@@ -74,6 +74,7 @@ build*/
 *.dll
 *.exe
 h3/valuutat/valuutat
+h3/vertailu/vertailu
 luvut
 a.out
 
