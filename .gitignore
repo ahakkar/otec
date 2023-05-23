@@ -75,6 +75,7 @@ build*/
 *.exe
 h3/valuutat/valuutat
 h3/vertailu/vertailu
+h3/ykkosvalit/ykkosvalit
 luvut
 a.out
 
