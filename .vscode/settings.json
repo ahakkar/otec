@@ -3,5 +3,8 @@
         "clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling",
         "clang-analyzer-security.insecureAPI.strcpy",
         "clang-analyzer-deadcode.DeadStores"
-    ]
+    ],
+    "files.associations": {
+        "stdlib.h": "c"
+    }
 }
