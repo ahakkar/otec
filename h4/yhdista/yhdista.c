@@ -17,7 +17,7 @@ char *yhdista(const char *mj, ...) {
     char *result;
     size_t len = 0;
 
-    /* Calculate the total length of the strings */
+    /* Calculate total length of strings */
     va_start(args, mj);
     temp = mj;
     while (temp != NULL) {
@@ -26,12 +26,12 @@ char *yhdista(const char *mj, ...) {
     }
     va_end(args);
 
-    /* Allocate memory for the resulting string */
+    /* Allocate memory for string */
     result = (char *) malloc(len + 1);
-    if (!result) return NULL;  /* Failed to allocate memory */
+    if (!result) return NULL;
     
-    /* Concatenate the strings */
-    result[0] = '\0'; /* Ensure the result string is empty */
+    /* Concatenate strings */
+    result[0] = '\0';
     va_start(args, mj);
     temp = mj;
     while (temp != NULL) {
